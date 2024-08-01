@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 30 17:49:49 2024
-
-@author: ayush
-"""
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pickle
@@ -12,31 +5,34 @@ import json
 
 app = FastAPI()
 
-class CalorieInput(BaseModel):
-    age: int
-    weight: float
-    height: float
-    duration: float
-    heart_rate: int
-    body_temp: float
+class model_input(BaseModel):
+    Gender: int
+    Age: int  # Corrected field name to lowercase
+    Height: float
+    Weight: float
+    Duration: float
+    Heart_Rate: float
+    Body_Temp: float
+    
+cal_loaded_model = pickle.load(open('D:/anaconda/calorie_model.sav', 'rb'))
 
-# Load the pre-trained model
-calorie_model = pickle.load(open('D:/anaconda/calorie_model.sav', 'rb'))
-
-@app.post('/calorie_prediction')
-def calorie_pred(input_parameters: CalorieInput):
+@app.post('/cal_prediction')
+def hr_pred(input_parameters : model_input):
+    
     input_data = input_parameters.json()
     input_dictionary = json.loads(input_data)
     
-    input_list = [
-        input_dictionary['age'],
-        input_dictionary['weight'],
-        input_dictionary['height'],
-        input_dictionary['duration'],
-        input_dictionary['heart_rate'],
-        input_dictionary['body_temp']
-    ]
+    Gender = input_dictionary['Gender']
+    Age = input_dictionary['Age']  # Corrected field name to lowercase
+    Height = input_dictionary['Height']
+    Weight = input_dictionary['Weight']
+    Duration = input_dictionary['Duration']
+    Heart_Rate = input_dictionary['Heart_Rate']
+    Body_Temp= input_dictionary['Body_Temp']
+   
     
-    prediction = calorie_model.predict([input_list])
     
-    return {"calories_burned": prediction[0]}
+    input_list=[Gender,Age,Height,Weight,Duration,Heart_Rate,Body_Temp]
+    
+    prediction=cal_loaded_model.predict([input_list])
+    return prediction
