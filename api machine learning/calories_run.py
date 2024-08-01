@@ -1,28 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 30 18:00:25 2024
-
-@author: ayush
-"""
-
-#calorie_prediction#
-import json
 import requests
 
-url = "http://127.0.0.1:8000/calorie_prediction"
+url = "http://127.0.0.1:8000/cal_prediction"
 
 input_data_for_model = {
-    "age": 25,
-    "weight": 70.5,
-    "height": 175.0,
-    "duration": 30.0,
-    "heart_rate": 120,
-    "body_temp": 36.6
-}
+    'Gender': 1,
+    'Age': 36,
+    'Height': 151.0,
+    'Weight': 50.0,
+    'Duration': 23.0,
+    'Heart_Rate': 96.0,
+    'Body_Temp': 40.7
+    }
 
-    
-
-input_json=json.dumps(input_data_for_model)
-
-response=requests.post(url,data=input_json)
+response = requests.post(url, json=input_data_for_model)
 print(response.text)
